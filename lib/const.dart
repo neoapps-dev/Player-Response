@@ -1,10 +1,8 @@
 final Map<String, String> headers = {
   'accept': '*/*',
-  'accept-encoding': 'gzip, deflate',
   'content-type': 'application/json',
   'content-encoding': 'gzip',
   'origin': "https://music.youtube.com/",
-  'cookie': 'CONSENT=YES+1',
 };
 
 final Map<String, dynamic> body = {
