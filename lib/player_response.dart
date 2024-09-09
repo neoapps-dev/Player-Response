@@ -1,6 +1,7 @@
 library player_response;
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import './const.dart';
 
 class PlayerResponse {
@@ -22,6 +23,9 @@ class PlayerResponse {
         return null;
       }
     } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return null;
     }
   }
@@ -46,10 +50,12 @@ class PlayerResponse {
       audioFormats.lastWhere((item) => item.itag == 251 || item.itag == 140);
 
   Audio get highestBitrateMp4aAudio =>
-      audioFormats.lastWhere((item) => item.itag == 140 || item.itag == 139);
+      audioFormats.lastWhere((item) => item.itag == 140 || item.itag == 139,
+          orElse: () => highestBitrateOpusAudio);
 
   Audio get highestBitrateOpusAudio =>
-      audioFormats.lastWhere((item) => item.itag == 251 || item.itag == 250);
+      audioFormats.lastWhere((item) => item.itag == 251 || item.itag == 250,
+          orElse: () => highestBitrateMp4aAudio);
 
   Audio get lowQualityAudio =>
       audioFormats.lastWhere((item) => item.itag == 249 || item.itag == 139);
@@ -76,6 +82,7 @@ class Audio {
   final Codec audioCodec;
   final int bitrate;
   final int duration;
+  final int size;
   final double loudnessDb;
   final String url;
   Audio(
@@ -84,17 +91,19 @@ class Audio {
       required this.bitrate,
       required this.duration,
       required this.loudnessDb,
-      required this.url});
+      required this.url,
+      required this.size});
 
   factory Audio.fromJson(json) => Audio(
       audioCodec: (json["mimeType"] as String).contains("mp4a")
           ? Codec.mp4a
           : Codec.opus,
       itag: json['itag'],
-      duration: int.parse(json["approxDurationMs"]),
-      bitrate: json["bitrate"],
-      loudnessDb: (json['loudnessDb']).toDouble(),
-      url: json['url']);
+      duration: int.tryParse(json["approxDurationMs"]) ?? 0,
+      bitrate: json["bitrate"] ?? 0,
+      loudnessDb: (json['loudnessDb'])?.toDouble() ?? 0.0,
+      url: json['url'],
+      size: int.tryParse(json["contentLength"]) ?? 0);
 
   Map<String, dynamic> toJson() => {
         "itag": itag,
@@ -102,7 +111,8 @@ class Audio {
         "bitrate": bitrate,
         "loudnessDb": loudnessDb,
         "url": url,
-        "approxDurationMs": duration
+        "approxDurationMs": duration,
+        "size": size
       };
 }
 
