@@ -8,8 +8,11 @@ class PlayerResponse {
   final bool playable;
   final List<Audio> audioFormats;
   PlayerResponse({required this.playable, required this.audioFormats});
+  static int retry = 0;
 
-  static Future<PlayerResponse?> fetch(String videoId) async {
+  static Future<PlayerResponse?> fetch(String videoId, {int option = 0}) async {
+    final url = getUrl(option);
+    final body = getBody(option);
     body['videoId'] = videoId;
     try {
       final response = (await Dio().post(url,
@@ -18,12 +21,27 @@ class PlayerResponse {
           ),
           data: body));
       if (response.statusCode == 200) {
-        return PlayerResponse.fromJson(response.data);
+        final playable = response.data["playabilityStatus"]["status"] == "OK";
+
+        //if playable then return the response
+        if (playable) {
+          retry = 0;
+          return PlayerResponse.fromJson(response.data);
+        }
+
+        //if not playable and not retried yet then retry once
+        if (!playable && retry == 0) {
+          retry++;
+          return fetch(videoId, option: (option + 1) % 2);
+        } else {
+          retry = 0;
+          return PlayerResponse(playable: false, audioFormats: []);
+        }
       } else {
         return null;
       }
     } catch (e) {
-      if (kDebugMode) {
+      if (kDebugMode || kProfileMode) {
         print(e);
       }
       return null;
@@ -31,15 +49,11 @@ class PlayerResponse {
   }
 
   factory PlayerResponse.fromJson(json) {
-    final isplayable = json["playabilityStatus"]["status"] == "OK";
-    //if not plablable no need to proceed further
-    if (!isplayable) return PlayerResponse(playable: false, audioFormats: []);
-
     final availableAudioFormats =
         (json["streamingData"]["adaptiveFormats"] as List)
             .where((item) => item['mimeType'].contains("audio"));
     return PlayerResponse(
-        playable: isplayable,
+        playable: true,
         audioFormats:
             availableAudioFormats.map((item) => Audio.fromJson(item)).toList());
   }

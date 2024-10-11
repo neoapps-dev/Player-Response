@@ -5,22 +5,42 @@ final Map<String, String> headers = {
   'origin': "https://music.youtube.com/",
 };
 
-final Map<String, dynamic> body = {
-  "context": {
-    "androidSdkVersion": 30,
-    "client": {
-      "clientName": "ANDROID_MUSIC",
-      "clientVersion": "5.28.1",
-      "hl": "en",
-      "platform": "MOBILE",
-      "visitorData": "CgttN24wcmd5UzNSWSi2lvq2BjIKCgJKUBIEGgAgYQ%3D%3D",
-      "userAgent":
-          "com.google.android.apps.youtube.music/5.28.1 (Linux; U; Android 11) gzip",
-    }
+final ANDROID_CONTEXT = {
+  'client': {
+    'clientName': 'ANDROID_MUSIC',
+    'clientVersion': '5.22.1',
+    'androidSdkVersion': 31,
+    'userAgent':
+        'com.google.android.youtube/19.29.1  (Linux; U; Android 11) gzip',
+    'hl': 'en',
+    'timeZone': 'UTC',
+    'utcOffsetMinutes': 0,
   },
-  "playlistId": null,
 };
 
-const kPart = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8";
+final IOS_CONTEXT = {
+  'client': {
+    'clientName': 'IOS',
+    'clientVersion': '19.29.1',
+    'deviceMake': 'Apple',
+    'deviceModel': 'iPhone16,2',
+    'hl': 'en',
+    'osName': 'iPhone',
+    'osVersion': '17.5.1.21F90',
+    'timeZone': 'UTC',
+    'userAgent':
+        'com.google.ios.youtube/19.29.1 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)',
+    'utcOffsetMinutes': 0
+  }
+};
 
-const url = "https://music.youtube.com/youtubei/v1/player?key=$kPart";
+const kPartIOS = "AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc";
+const kPartAndroid = "AIzaSyAOghZGza2MQSZkY_zfZ370N-PUdXEo8AI";
+const allKeys = [kPartIOS, kPartAndroid];
+
+String getUrl(int option) =>
+    "https://music.youtube.com/youtubei/v1/player?key=${allKeys[option]}&prettyPrint=false";
+
+Map<String, dynamic> getBody(int option) => {
+      "context": option == 0 ? IOS_CONTEXT : ANDROID_CONTEXT,
+    };

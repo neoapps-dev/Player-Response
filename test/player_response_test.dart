@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:player_response/player_response.dart';
 
-void main() {
+Future<void> main() async {
   test('Verify/Observe Player response', () async {
     final startTime = DateTime.now();
-    final res = await PlayerResponse.fetch("HyHNuVaZJ-k");
+    final res = await PlayerResponse.fetch("HyHNuVaZJ-k", option: 1);
     final endTime = DateTime.now();
     final executionTime = endTime.difference(startTime);
 
@@ -16,6 +16,6 @@ void main() {
       }
       print(res.hmStreamingData);
     }
-    expect(res.runtimeType, PlayerResponse);
+    expect(res?.playable, true);
   });
 }
