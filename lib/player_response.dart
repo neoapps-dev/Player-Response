@@ -10,7 +10,8 @@ class PlayerResponse {
   PlayerResponse({required this.playable, required this.audioFormats});
   static int retry = 0;
 
-  static Future<PlayerResponse?> fetch(String videoId, {int option = 0}) async {
+  static Future<PlayerResponse?> fetch(String videoId,
+      {int option = 0}) async {
     final url = getUrl(option);
     final body = getBody(option);
     body['videoId'] = videoId;
@@ -32,7 +33,7 @@ class PlayerResponse {
         //if not playable and not retried yet then retry once
         if (!playable && retry == 0) {
           retry++;
-          return fetch(videoId, option: (option + 1) % 2);
+          return fetch(videoId);
         } else {
           retry = 0;
           return PlayerResponse(playable: false, audioFormats: []);

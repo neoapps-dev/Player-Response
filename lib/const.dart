@@ -2,7 +2,8 @@ final Map<String, String> headers = {
   'accept': '*/*',
   'content-type': 'application/json',
   'content-encoding': 'gzip',
-  'origin': "https://music.youtube.com/",
+  "Referer": "https://wwww.youtube.com/",
+  'origin': "https://www.youtube.com/",
 };
 
 final ANDROID_CONTEXT = {
@@ -39,7 +40,7 @@ const kPartAndroid = "AIzaSyAOghZGza2MQSZkY_zfZ370N-PUdXEo8AI";
 const allKeys = [kPartIOS, kPartAndroid];
 
 String getUrl(int option) =>
-    "https://music.youtube.com/youtubei/v1/player?key=${allKeys[option]}&prettyPrint=false";
+    "https://www.youtube.com/youtubei/v1/player?key=${allKeys[option]}&prettyPrint=false";
 
 Map<String, dynamic> getBody(int option) => {
       "context": option == 0 ? IOS_CONTEXT : ANDROID_CONTEXT,
