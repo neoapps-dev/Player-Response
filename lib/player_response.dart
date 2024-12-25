@@ -11,10 +11,13 @@ class PlayerResponse {
   static int retry = 0;
 
   static Future<PlayerResponse?> fetch(String videoId,
-      {int option = 0}) async {
+      {int option = 1}) async {
     final url = getUrl(option);
     final body = getBody(option);
     body['videoId'] = videoId;
+    body['contentCheckOk'] = true;
+    body['racyCheckOk'] = true;
+    
     try {
       final response = (await Dio().post(url,
           options: Options(

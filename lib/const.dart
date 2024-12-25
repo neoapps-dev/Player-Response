@@ -7,15 +7,16 @@ final Map<String, String> headers = {
 };
 
 final ANDROID_CONTEXT = {
-  'client': {
-    'clientName': 'ANDROID_MUSIC',
-    'clientVersion': '5.22.1',
-    'androidSdkVersion': 31,
+ 'client': {
+    'clientName': 'ANDROID_VR',
+    'clientVersion': '1.56.21',
+    'deviceModel': 'Quest 3',
+    'androidSdkVersion': 32,
     'userAgent':
-        'com.google.android.youtube/19.29.1  (Linux; U; Android 11) gzip',
+        'com.google.android.apps.youtube.vr.oculus/1.56.21 (Linux; U; Android 12; GB) gzip',
     'hl': 'en',
     'timeZone': 'UTC',
-    'utcOffsetMinutes': 0,
+    'utcOffsetMinutes': 0
   },
 };
 
