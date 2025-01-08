@@ -11,11 +11,12 @@ final ANDROID_CONTEXT = {
     'clientName': 'ANDROID_VR',
     'clientVersion': '1.56.21',
     'deviceModel': 'Quest 3',
-    'androidSdkVersion': 32,
+    'androidSdkVersion': '32',
     'userAgent':
-        'com.google.android.apps.youtube.vr.oculus/1.56.21 (Linux; U; Android 12; GB) gzip',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.42',
     'hl': 'en',
     'timeZone': 'UTC',
+    'playerType': 'UNIPLAYER'
     'utcOffsetMinutes': 0
   },
 };
